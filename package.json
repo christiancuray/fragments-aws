@@ -17,5 +17,8 @@
     "url": "https://github.com/christiancuray/fragments/issues"
   },
   "homepage": "https://github.com/christiancuray/fragments#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
 }
