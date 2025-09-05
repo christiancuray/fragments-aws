@@ -52,7 +52,7 @@ app.use((req, res) => {
 });
 
 // add error handling middleware for any other errors
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const status = err.status || 500;
   const message = err.message || 'unable to process request';
 

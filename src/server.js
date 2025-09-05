@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 // to gracefully shutdown server
 const stoppable = require('stoppable');
 
