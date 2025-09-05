@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christiancuray/fragments.git"
+    "url": "https://github.com/christiancuray/fragments.git"
   },
   "keywords": [],
   "author": "Christian Daryl Curay",
@@ -26,8 +26,14 @@
     "prettier": "3.6.2"
   },
   "dependencies": {
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "pino": "^9.9.4",
     "pino-http": "^10.5.0",
-    "pino-pretty": "^13.1.1"
+    "pino-pretty": "^13.1.1",
+    "stoppable": "^1.1.0"
   }
 }

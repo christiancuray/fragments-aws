@@ -1,5 +1,6 @@
-// 'info' as default log level if not specified
+require('dotenv').config();
 
+// 'info' as default log level if not specified
 const options = {
   level: process.env.LOG_LEVEL || 'info',
 };
