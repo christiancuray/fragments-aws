@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+require('dotenv').config();
 
 // get the author and version from the package.json
 const { author, version, repository } = require('../package.json');
