@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
-require('dotenv').config();
 
 // get the author and version from the package.json
 const { author, version, repository } = require('../package.json');
@@ -29,17 +28,7 @@ app.use(cors());
 app.use(compression());
 
 // basic route to check if the server will run
-app.get('/', (req, res) => {
-  //client should not cache this response
-  res.setHeader('Cache-Control', 'no-cache');
-
-  res.status(200).json({
-    status: 'ok',
-    author,
-    url,
-    version,
-  });
-});
+app.use('/', require('./routes'));
 
 // add 404 middleware for unknown routes
 app.use((req, res) => {

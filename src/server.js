@@ -8,8 +8,8 @@ const logger = require('./logger');
 const app = require('./app');
 
 // get port from environment or use default
-console.log(process.env.PORT);
 const PORT = process.env.PORT || 1600;
+console.log(PORT);
 
 //start the server
 const server = stoppable(
