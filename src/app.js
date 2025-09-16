@@ -2,10 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
-
-// get the author and version from the package.json
-const { author, version, repository } = require('../package.json');
-const { url } = repository;
+const passport = require('passport');
+const authenticate = require('./auth');
 const logger = require('./logger');
 
 const pino = require('pino-http')({
@@ -15,20 +13,19 @@ const pino = require('pino-http')({
 // express app instance
 const app = express();
 
-// use pino for logging middleware
-app.use(pino);
+app.use(pino); // use pino for logging middleware
 
-// use helmet for security middleware
-app.use(helmet());
+app.use(helmet()); // use helmet for security middleware
 
-// use CORS middleware so can make request from origins
-app.use(cors());
+app.use(cors()); // use CORS middleware so can make request from origins
 
-// use gzip/deflate compression middleware
-app.use(compression());
+app.use(compression()); // use gzip/deflate compression middleware
 
-// basic route to check if the server will run
-app.use('/', require('./routes'));
+passport.use(authenticate.Strategy());
+
+app.use(passport.initialize());
+
+app.use('/', require('./routes')); // basic route to check if the server will run
 
 // add 404 middleware for unknown routes
 app.use((req, res) => {
