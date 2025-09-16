@@ -1,5 +1,5 @@
 // fragments microservice api to user, default to localhost:8080 if not et in environment
-const apiURL = "http://localhost:8080";
+const apiURL = import.meta.env.VITE_FRAGMENT_API_URL;
 
 /**
  * Given an authenticated user, request all fragments for this user from the
