@@ -5,25 +5,22 @@ async function init() {
   const userSection = document.getElementById("user");
   const loginBtn = document.getElementById("login");
 
-  // Wire up event handlers to deal with login and logout.
+  // log in button listener
   loginBtn.addEventListener("click", function () {
-    // Sign-in via the Amazon Cognito Hosted UI (requires redirects), see:
-    signIn();
+    signIn(); // Sign-in via the Amazon Cognito Hosted UI
   });
 
-  // See if we're signed in (i.e., we'll have a `user` object)
+  // See if we're signed in already
   const user = await getUser();
-  if (!user) {
-    return;
-  }
+  if (!user) return;
 
-  // Update the UI to welcome the user
+  // show the user section
   userSection.hidden = false;
 
-  // Show the user's username
+  // display the username
   userSection.querySelector(".username").innerText = user.username;
 
-  // Disable the Login button
+  // disable the Login button
   loginBtn.disabled = true;
 }
 

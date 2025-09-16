@@ -1,17 +1,15 @@
 import { UserManager } from "oidc-client-ts";
 
 const cognitoAuthConfig = {
-  authority: `https://cognito-idp.us-east-1.amazonaws.com/${
+  authority: `${import.meta.env.VITE_API_URL}/${
     import.meta.env.VITE_AWS_COGNITO_POOL_ID
   }`,
   client_id: import.meta.env.VITE_AWS_COGNITO_CLIENT_ID,
   redirect_uri: import.meta.env.VITE_OAUTH_SIGN_IN_REDIRECT_URL,
   response_type: "code",
   scope: "phone openid email",
-  // no revoke of "access token" ([URL]
-  revokeTokenTypes: ["refresh_token"],
-  // no silent renew via "prompt=none" ([URL]
-  automaticSilentRenew: false,
+  revokeTokenTypes: ["refresh_token"], // no revoke of "access token" ([URL]
+  automaticSilentRenew: false, // no silent renew via "prompt=none" ([URL]
 };
 
 // Create a UserManager instance
@@ -20,15 +18,14 @@ const userManager = new UserManager({
 });
 
 export async function signIn() {
-  // Trigger a redirect to the Cognito auth page, so user can authenticate
+  // redirect to the Cognito auth page for sign-in
   await userManager.signinRedirect();
 }
 
-// Create a simplified view of the user, with an extra method for creating the auth headers
+// Create a simplified view of the user object
 function formatUser(user) {
   console.log("User Authenticated", { user });
   return {
-    // If you add any other profile scopes, you can include them here
     username: user.profile["cognito:username"],
     email: user.profile.email,
     idToken: user.id_token,
@@ -40,6 +37,7 @@ function formatUser(user) {
   };
 }
 
+// Get the current user, handling the redirect callback if needed
 export async function getUser() {
   // First, check if we're handling a signin redirect callback (e.g., is ?code=... in URL)
   if (window.location.search.includes("code=")) {
