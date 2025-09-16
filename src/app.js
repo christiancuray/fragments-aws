@@ -1,4 +1,5 @@
 import { signIn, getUser } from "./auth.js";
+import { getUserFragments } from "./api.js";
 
 async function init() {
   // Get our UI elements
@@ -7,6 +8,7 @@ async function init() {
 
   // log in button listener
   loginBtn.addEventListener("click", function () {
+    console.log("[INFO] Login button clicked");
     signIn(); // Sign-in via the Amazon Cognito Hosted UI
   });
 
@@ -14,14 +16,13 @@ async function init() {
   const user = await getUser();
   if (!user) return;
 
-  // show the user section
-  userSection.hidden = false;
+  userSection.hidden = false; // show the user section
+  userSection.querySelector(".username").innerText = user.username; // display the username
+  loginBtn.disabled = true; // disable the Login button
+  console.log("[INFO] User is signed in:", user);
 
-  // display the username
-  userSection.querySelector(".username").innerText = user.username;
-
-  // disable the Login button
-  loginBtn.disabled = true;
+  const userFragments = await getUserFragments(user);
+  console.log("[INFO] User fragments:", userFragments);
 }
 
 // Wait for the DOM to be ready, then start the app
