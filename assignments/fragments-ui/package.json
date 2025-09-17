@@ -1,0 +1,32 @@
+{
+  "name": "fragments-ui",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Fragments UI testing web app",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christiancuray/CCP555-2025F-NSD-Christian-Curay-cdcuray-Lab2.git"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.2",
+    "oidc-client-ts": "^3.0.1"
+  },
+  "devDependencies": {
+    "vite": "^5.3.3"
+  },
+  "author": "Christian Daryl Curay",
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/christiancuray/CCP555-2025F-NSD-Christian-Curay-cdcuray-Lab2/issues"
+  },
+  "homepage": "https://github.com/christiancuray/CCP555-2025F-NSD-Christian-Curay-cdcuray-Lab2#readme"
+}
