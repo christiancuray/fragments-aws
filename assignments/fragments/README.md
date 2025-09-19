@@ -26,6 +26,8 @@ Example `debug.env`:
 ```
 PORT=3000
 LOG_LEVEL=debug
+AWS_COGNITO_POOL_ID=us-east-1_xxxxxxxx
+AWS_COGNITO_CLIENT_ID=XXXXXXXXXXXXXXXXXXX
 ```
 
 ## NPM Scripts
