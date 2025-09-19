@@ -2,14 +2,14 @@ name: ci
 
 # This workflow is triggered on pushes and pull requests to the main branch
 on:
-  push:
-    # branches:
-    #   - main
+  pull_request:
+    branches:
+      - main
     paths:
       - "fragments/**"
-  pull_request:
-    # branches:
-    #   - main
+  push:
+    branches:
+      - main
     paths:
       - "fragments/**"
 
