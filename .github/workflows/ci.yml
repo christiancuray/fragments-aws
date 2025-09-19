@@ -6,12 +6,12 @@ on:
     branches:
       - main
     paths:
-      - "fragments/**"
+      - "assignments/fragments/**"
   push:
     branches:
       - main
     paths:
-      - "fragments/**"
+      - "assignments/fragments/**"
 
 jobs:
   lint:
