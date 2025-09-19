@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "fragments/**"
   pull_request:
     branches:
       - main
+    paths:
+      - "fragments/**"
 
 jobs:
   lint:
