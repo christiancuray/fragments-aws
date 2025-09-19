@@ -1,0 +1,31 @@
+name: ci
+
+# This workflow is triggered on pushes and pull requests to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set-up node
+        uses: actions/setup-node@v4
+        with:
+          # Use node LTS
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        uses: npm ci
+
+      - name: Run ESLint
+        uses: npm run lint
