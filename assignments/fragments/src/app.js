@@ -42,6 +42,7 @@ app.use((req, res) => {
 app.use((err, req, res) => {
   const status = err.status || 500;
   const message = err.message || 'unable to process request';
+  const unusedVar = 'test'; // to test Sentry integration
 
   if (status > 499) {
     logger.error({ err }, `Error proccesing request: ${message}`);

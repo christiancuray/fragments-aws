@@ -15,7 +15,6 @@ console.log(PORT);
 const server = stoppable(
   app.listen(PORT, () => {
     logger.info(`Server started on port ${PORT}`);
-    logger.info('Hit CTRL-C to stop the server');
   })
 );
 
