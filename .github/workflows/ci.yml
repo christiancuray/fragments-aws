@@ -29,9 +29,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        working-directory: fragments
+        working-directory: assignments/fragments
         run: npm ci
 
       - name: Run ESLint
-        working-directory: fragments
+        working-directory: assignments/fragments
         run: npm run lint
