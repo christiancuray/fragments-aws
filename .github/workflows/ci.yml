@@ -3,15 +3,15 @@ name: ci
 # This workflow is triggered on pushes and pull requests to the main branch
 on:
   push:
-    branches:
-      - main
-    # paths:
-    #   - "fragments/**"
+    # branches:
+    #   - main
+    paths:
+      - "fragments/**"
   pull_request:
-    branches:
-      - main
-    # paths:
-    #   - "fragments/**"
+    # branches:
+    #   - main
+    paths:
+      - "fragments/**"
 
 jobs:
   lint:
@@ -29,7 +29,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
+        working-directory: fragments
         run: npm ci
 
       - name: Run ESLint
+        working-directory: fragments
         run: npm run lint
