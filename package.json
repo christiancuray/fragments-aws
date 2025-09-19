@@ -1,6 +1,7 @@
 {
     "private": true,
     "workspaces": [
-      "assignments/fragments"
+      "assignments/fragments",
+      "assignments/fragments-ui"
     ]
   }
