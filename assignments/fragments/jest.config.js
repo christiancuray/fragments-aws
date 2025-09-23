@@ -1,6 +1,6 @@
 // get the path of our env.jest file
 const path = require('path');
-const envFile = path.join(__dirname, 'env.jest');
+const envFile = path.join(__dirname, '.env.jest');
 
 // read the env file for jest
 require('dotenv').config({ path: envFile });
