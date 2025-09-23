@@ -27,8 +27,9 @@ app.use(passport.initialize());
 
 app.use('/', require('./routes')); // basic route to check if the server will run
 
-// add 404 middleware for unknown routes
+// Add 404 middleware for unknown routes
 app.use((req, res) => {
+  logger.info('Returning 404 for unknown route');
   res.status(404).json({
     status: 'error',
     error: {
