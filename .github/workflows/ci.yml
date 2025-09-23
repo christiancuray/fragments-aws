@@ -50,4 +50,9 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm install
+        working-directory: assignments/fragments
+        run: npm ci
+
+      - name: Run unit tests
+        working-directory: assignments/fragments
+        run: npm test
