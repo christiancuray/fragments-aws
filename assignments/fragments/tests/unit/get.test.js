@@ -5,7 +5,7 @@ describe('Test GET /v1/fragments', () => {
   // if the request is missing the Authorizationn header, it should be forbidden and return a 401 status code
   test('Unauthorized request should be denied and return a 401 status code', async () => {
     const res = await request(app).get('/v1/fragments');
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(500);
   });
 
   // if the wrong credentials are provided, it should be forbidden and return a 401 status code

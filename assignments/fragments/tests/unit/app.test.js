@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../../src/app.js');
 
+// Test 404 Middleware
 describe('Test 404 Middleware', () => {
   test('Unknown routes should return a 404 status code and error message "not found"', async () => {
     const res = await request(app).get('/unknown-route');
