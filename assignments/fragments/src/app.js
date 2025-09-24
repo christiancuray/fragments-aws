@@ -31,13 +31,7 @@ app.use('/', require('./routes')); // basic route to check if the server will ru
 // Add 404 middleware for unknown routes
 app.use((req, res) => {
   logger.info('Returning 404 for unknown route');
-  res.status(404).json({
-    status: 'error',
-    error: {
-      message: 'not found',
-      code: 404,
-    },
-  });
+  res.status(404).json(createErrorResponse(404, 'not found'));
 });
 
 // add error handling middleware for any other errors
