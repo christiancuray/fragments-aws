@@ -1,5 +1,4 @@
 const memory = require('../../src/model/data/memory/index');
-const MemoryDB = require('../../src/model/data/memory/memory-db');
 
 const fakeFragment = {
   id: '1234',
