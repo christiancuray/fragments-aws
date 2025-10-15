@@ -1,4 +1,3 @@
-const passport = require('passport');
 const BearerStrategy = require('passport-http-bearer').Strategy;
 const { CognitoJwtVerifier } = require('aws-jwt-verify');
 
@@ -8,6 +7,8 @@ const { CognitoJwtVerifier } = require('aws-jwt-verify');
 
 // get the logger instance
 const logger = require('../logger');
+
+const authorize = require('./auth-middleware');
 
 // check if we have cognito client id and pool id
 if (!(process.env.AWS_COGNITO_CLIENT_ID && process.env.AWS_COGNITO_POOL_ID)) {
@@ -52,5 +53,5 @@ module.exports.Strategy = () => {
 };
 
 module.exports.authenticate = () => {
-  return passport.authenticate('bearer', { session: false });
+  return authorize('bearer');
 };
