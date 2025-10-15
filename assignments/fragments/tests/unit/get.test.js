@@ -16,10 +16,10 @@ describe('Test GET /v1/fragments', () => {
 
   // if the correct credentials are provided, it should return a 200 status code
   test('Authenticated users get access and return a 200 status code', async () => {
-    const res = await request(app).get('/v1/fragments').auth('user1@gmail.com', 'password1!');
+    const res = await request(app).get('/v1/fragments').auth('user1@gmail.com', 'password123');
     expect(res.statusCode).toBe(200);
     expect(res.body.status).toBe('ok');
     expect(Array.isArray(res.body.fragments)).toBe(true);
-    expect(res.body.message).toBe('GET /v1/fragments endpoint is working fine');
+    expect(res.body.message).toBe('fragments retrieved successfully');
   });
 });
