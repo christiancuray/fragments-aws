@@ -8,6 +8,7 @@ const router = express.Router();
 // define the fragments routes with authentication
 router.get('/fragments', authenticate(), require('./get'));
 router.post('/fragments', authenticate(), require('./post'));
-// other routes will go here in the future ( POST, PUT, DELETE, etc)
+router.get('/fragments/:id', authenticate(), require('./getById'));
+// other routes will go here in the future ( PUT, DELETE, etc)
 
 module.exports = router;
