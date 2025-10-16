@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  color: #333;
+}
+
+form {
+  width: 60%;
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+}
+
+textarea,
+select {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#fragment-result {
+  background: #d4edda;
+  border: 1px solid #c3e6cb;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+pre {
+  background: #f8f9fa;
+  padding: 10px;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+
+.fragment-item {
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 5px;
+  background: white;
+}
+
+.fragment-details {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+.fragment-content,
+.fragment-metadata,
+.fragment-location {
+  margin: 15px 0;
+  padding: 10px;
+  background: white;
+  border-radius: 3px;
+  border: 1px solid #ddd;
+}
