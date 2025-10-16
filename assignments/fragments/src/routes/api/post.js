@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
       //save fragment data
       await fragment.save();
 
-      const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
+      const location = `${process.env.API_URL}/v1/fragments/${fragment.id}`;
 
       res.setHeader('Location', location);
       //return success response with 201 status code

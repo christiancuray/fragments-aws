@@ -20,7 +20,7 @@ module.exports = async (req, res) => {
     logger.info(`Fragment ${fragment.id} retrieved for user ${req.user}`);
 
     // Set the Location header to the fragment URL
-    const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
+    const location = `${process.env.API_URL}/v1/fragments/${fragment.id}`;
     res.setHeader('Location', location);
 
     // Return the fragment data with metadata
