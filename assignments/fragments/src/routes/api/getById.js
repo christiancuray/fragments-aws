@@ -19,6 +19,10 @@ module.exports = async (req, res) => {
     const data = await fragment.getData();
     logger.info(`Fragment ${fragment.id} retrieved for user ${req.user}`);
 
+    // Set the Location header to the fragment URL
+    const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
+    res.setHeader('Location', location);
+
     // Return the fragment data with metadata
     res.status(200).json(
       createSuccessResponse({

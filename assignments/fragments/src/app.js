@@ -19,7 +19,11 @@ app.use(pino); // use pino for logging middleware
 
 app.use(helmet()); // use helmet for security middleware
 
-app.use(cors()); // use CORS middleware so can make request from origins
+app.use(
+  cors({
+    exposedHeaders: ['Location'], // explicitly expose the Location header
+  })
+); // use CORS middleware so can make request from origins
 
 app.use(compression()); // use gzip/deflate compression middleware
 
