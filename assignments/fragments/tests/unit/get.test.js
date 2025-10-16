@@ -6,6 +6,9 @@ describe('Test GET /v1/fragments', () => {
   test('Unauthorized request should be denied and return a 401 status code', async () => {
     const res = await request(app).get('/v1/fragments');
     expect(res.statusCode).toBe(401);
+    expect(res.body.status).toBe('error');
+    expect(res.body.error.code).toBe(401);
+    expect(res.body.error.message).toBe('Unauthorized');
   });
 
   // if the wrong credentials are provided, it should be forbidden and return a 401 status code
