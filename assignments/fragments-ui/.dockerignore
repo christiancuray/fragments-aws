@@ -1,0 +1,10 @@
+.docusaurus
+.github
+.husky
+.vscode
+build
+node_modules
+git*
+prettier*
+*.md
+!LICENSE.md
