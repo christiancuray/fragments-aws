@@ -96,6 +96,7 @@ jobs:
           SHA_TAG: ${{ github.sha }}
         uses: docker/build-push-action@v6
         with:
+          context: assignments/fragments
           push: true
           tags: |
             ${{ env.DOCKERHUB_REPO }}:latest
