@@ -89,3 +89,5 @@ app.use((err, req, res, next) => {
   next();
 });
 module.exports = app;
+
+console.log('testing log to trigger hadolint in ci');
