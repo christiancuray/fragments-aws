@@ -39,7 +39,8 @@ ENV PORT=8080
 WORKDIR /app
 
 # Install tini and curl in the production image
-RUN apk --no-cache add tini=0.19.0-r2 curl=8.5.0-r0
+# hadolint ignore=DL3018
+RUN apk add --no-cache tini curl
 # COPY node modules from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
 
