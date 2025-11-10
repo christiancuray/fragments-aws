@@ -36,6 +36,20 @@ jobs:
         working-directory: assignments/fragments
         run: npm run lint
 
+  # lint dockerfile with hadolint
+  dockerfile-lint:
+    name: Dockerfile Lint
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/hadolint-action
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: assignments/fragments/Dockerfile
+
   unit-tests:
     name: Unit Tests
     runs-on: ubuntu-latest
