@@ -90,4 +90,4 @@ app.use((err, req, res, next) => {
 });
 module.exports = app;
 
-console.log('testing log to trigger build and push to docker from ci');
+console.log('testing log to trigger cd workflow');
