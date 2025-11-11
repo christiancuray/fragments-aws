@@ -59,6 +59,5 @@ jobs:
           context: assignments/fragments
           push: true
           tags: |
-            # use version tag and latest tag
             ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.VERSION_TAG }}
             ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
