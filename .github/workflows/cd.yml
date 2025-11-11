@@ -14,6 +14,10 @@ name: cd
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - "assignments/fragments/**"
     tags:
       # any tag starting with 'v' will trigger this workflow
       - "v*.*.*"
