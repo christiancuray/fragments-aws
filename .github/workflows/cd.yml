@@ -1,0 +1,60 @@
+# Continuous Delivery Workflow
+#
+# This should happen whenever we push a new tag, and we tag an existing
+# commit after we know it's good (e.g., has been tested).
+#
+# To create a new tag, we also need to update the package.json version:
+#
+# $ npm version 0.5.0
+#
+# This will update `version` in package.json to `0.5.0` and create a new
+# tag, `v0.5.0` in git. We'll then use this tag (i.e., `v0.5.0`) to tag
+# our docker image before we push to AWS.
+name: cd
+
+on:
+  push:
+    tags:
+      # any tag starting with 'v' will trigger this workflow
+      - "v*.*.*"
+
+jobs:
+  # Note: this assumes that CI jobs have already done
+  aws:
+    name: AWS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS Credentials using Secrets
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN}}
+          aws-region: us-east-1
+
+      # Login to ECR repo using the configured credentials above
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Build and push an Image to Amazon ECR
+      - name: Build and push to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: fragments
+          # There will be 2 tags: first is the "version" tag, second is "latest"
+          VERSION_TAG: ${{ github.ref_name }}
+        uses: docker/build-push-action@v6
+        with:
+          context: assignments/fragments
+          push: true
+          tags: |
+            # use version tag and latest tag
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.VERSION_TAG }}
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
