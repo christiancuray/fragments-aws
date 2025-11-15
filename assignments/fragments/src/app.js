@@ -29,9 +29,8 @@ app.use(compression()); // use gzip/deflate compression middleware
 
 // Helper function to check if content type is supported
 const isSupportedContentType = (type) => {
-  // For Assignment 1, only support text/plain
-  // TODO: Expand this for future assignments
-  return type === 'text/plain';
+  const supportedTypes = ['application/json', 'text/plain', 'text/markdown', 'text/html'];
+  return supportedTypes.includes(type);
 };
 
 // parse the raw body of incoming requests for supported content types up to 5MB size
