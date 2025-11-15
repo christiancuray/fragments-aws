@@ -1,12 +1,7 @@
 // fragments microservice api to user, default to localhost:8080 if not set in environment
 const apiURL = import.meta.env.VITE_FRAGMENT_API_URL || "http://localhost:8080";
 
-/**
- * Given an authenticated user, request all fragments for this user from the
- * fragments microservice (currently only running locally). We expect a user
- * to have an `idToken` attached, so we can send that along with the request.
- */
-
+// get user fragments
 export async function getUserFragments(user) {
   console.log("[INFO] Requesting user fragments data ...");
   try {
@@ -27,14 +22,30 @@ export async function getUserFragments(user) {
   }
 }
 
-/**
- * Create a new fragment for the authenticated user
- */
-export async function createFragment(
-  user,
-  content,
-  contentType = "text/plain"
-) {
+// get expanded user fragments
+export async function getExpandedUserFragments(user) {
+  console.log("[INFO] Requesting expanded user fragments data ...");
+  try {
+    const fragmentURL = new URL("/v1/fragments?expand=1", apiURL);
+    const res = await fetch(fragmentURL, {
+      headers: user.authorizationHeaders(),
+    });
+
+    // check if the response is not ok, if so throw an error
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("[SUCCESS] Received expanded user fragments data:", data);
+    return data;
+  } catch (err) {
+    console.error("[ERROR] Unable to get expanded user fragments data:", err);
+    throw err;
+  }
+}
+
+// create a new fragment
+export async function createFragment(user, content, contentType) {
   console.log("[INFO] Creating new fragment...");
   try {
     const fragmentURL = new URL("/v1/fragments", apiURL);
@@ -61,6 +72,50 @@ export async function createFragment(
     return { data, location };
   } catch (err) {
     console.error("[ERROR] Unable to create fragment:", err);
+    throw err;
+  }
+}
+
+// get a fragment by id
+export async function getFragmentById(user, fragmentId) {
+  console.log("[INFO] Requesting fragment by id:", fragmentId);
+  try {
+    const fragmentURL = new URL(`/v1/fragments/${fragmentId}`, apiURL);
+    const res = await fetch(fragmentURL, {
+      headers: user.authorizationHeaders(),
+    });
+
+    // check if the response is not ok, if so throw an error
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("[SUCCESS] Received fragment by id:", data);
+    return data;
+  } catch (err) {
+    console.error("[ERROR] Unable to get fragment by id:", err);
+    throw err;
+  }
+}
+
+// get a converted fragment by id
+export async function getConvertedFragmentById(user, fragmentId, ext) {
+  console.log("[INFO] Requesting converted fragment by id:", fragmentId);
+  try {
+    const fragmentURL = new URL(`/v1/fragments/${fragmentId}.${ext}`, apiURL);
+    const res = await fetch(fragmentURL, {
+      headers: user.authorizationHeaders(),
+    });
+
+    // check if the response is not ok, if so throw an error
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("[SUCCESS] Received converted fragment by id:", data);
+    return data;
+  } catch (err) {
+    console.error("[ERROR] Unable to get converted fragment by id:", err);
     throw err;
   }
 }
