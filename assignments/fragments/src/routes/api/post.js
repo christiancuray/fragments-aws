@@ -4,13 +4,26 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 
 // POST /v1/fragments handler - create a new fragment for the current user
 module.exports = async (req, res) => {
+  // Validate Content-Type header first (required for all requests)
+  const contentType = req.get('Content-Type');
+  if (!contentType) {
+    logger.error('Content-Type header is missing');
+    return res.status(415).json(createErrorResponse(415, 'Content-Type header is missing'));
+  }
+
+  // Check if the content type is supported
+  if (!Fragment.isSupportedType(contentType)) {
+    logger.error(`Unsupported Media Type: ${contentType}`);
+    return res.status(415).json(createErrorResponse(415, `Unsupported Media Type: ${contentType}`));
+  }
+
   //check if got buffer from raw body parser
   if (Buffer.isBuffer(req.body)) {
     try {
       // create fragment object
       const fragment = new Fragment({
         ownerId: req.user,
-        type: req.get('Content-Type'),
+        type: contentType,
         size: req.body.length,
       });
 
@@ -25,7 +38,8 @@ module.exports = async (req, res) => {
       //save fragment data
       await fragment.save();
 
-      const location = `${process.env.API_URL}/v1/fragments/${fragment.id}`;
+      // Build Location URL from request (supports both localhost and production)
+      const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
 
       res.setHeader('Location', location);
       //return success response with 201 status code
@@ -48,21 +62,7 @@ module.exports = async (req, res) => {
       res.status(500).json(createErrorResponse(500, 'Internal server error'));
     }
   } else {
-    // if the body is not a buffer, check if the content type is supported
-    const contentType = req.get('Content-Type');
-    if (!contentType) {
-      logger.error('Content-Type header is missing');
-      return res.status(415).json(createErrorResponse(400, 'Content-Type header is missing'));
-    }
-    // check if the content type is supported
-    if (!Fragment.isSupportedType(contentType)) {
-      logger.error(`Unsupported Media Type: ${contentType}`);
-      return res
-        .status(415)
-        .json(createErrorResponse(415, `Unsupported Media Type: ${contentType}`));
-    }
-
-    // if not a buffer and content type is supported
+    // if the body is not a buffer, content type is already validated above
     logger.error('Invalid request body');
     return res.status(400).json(createErrorResponse(400, 'Bad Request: Body must be a Buffer'));
   }

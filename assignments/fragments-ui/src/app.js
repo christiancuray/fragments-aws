@@ -22,6 +22,7 @@ async function init() {
   userSection.hidden = false; // show the user section
   userSection.querySelector(".username").innerText = user.username; // display the username
   loginBtn.disabled = true; // disable the Login button
+  loginBtn.innerText = "Signed In"; // change button text
   console.log("[INFO] User is signed in:", user);
 
   // set up fragment form

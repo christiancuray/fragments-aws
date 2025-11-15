@@ -4,6 +4,11 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 
 // GET /v1/fragments handler - return the list of fragments for the current user
 module.exports = async (req, res) => {
+  const expand = req.query.expand;
+  if (expand === '1') {
+    // Delegate to the expanded fragments handler
+    return require('./getExpanded')(req, res);
+  }
   try {
     if (!req.user) {
       return res.status(401).json(createErrorResponse(401, 'Unauthorized'));
