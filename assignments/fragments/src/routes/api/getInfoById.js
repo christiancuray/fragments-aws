@@ -2,7 +2,7 @@ const Fragment = require('../../model/fragments');
 const logger = require('../../logger');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 
-// GET /v1/fragments?expand=1 handler
+// GET /v1/fragments/:id/info
 module.exports = async (req, res) => {
   try {
     const fragment = await Fragment.byId(req.params.id);
@@ -16,14 +16,9 @@ module.exports = async (req, res) => {
       return res.status(404).json(createErrorResponse(404, 'Fragment not found'));
     }
 
-    const data = await fragment.getData();
-    logger.info(`Fragment ${fragment.id} retrieved for user ${req.user}`);
+    logger.info(`Fragment info for ${fragment.id} retrieved for user ${req.user}`);
 
-    // Set the Location header to the fragment URL (build from request for flexibility)
-    const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
-    res.setHeader('Location', location);
-
-    // Return the fragment data with metadata
+    // Return the fragment metadata without the data
     res.status(200).json(
       createSuccessResponse({
         fragment: {
@@ -33,7 +28,6 @@ module.exports = async (req, res) => {
           updated: fragment.updated,
           type: fragment.type,
           size: fragment.size,
-          data: data ? data.toString('utf8') : null,
         },
       })
     );

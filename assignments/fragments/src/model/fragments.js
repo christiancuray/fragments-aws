@@ -90,9 +90,8 @@ class Fragment {
   // Check if a content type is supported
   // returns boolean
   static isSupportedType(type) {
-    // For Assignment 1, only support text/plain
-    // TODO: Expand this for future assignments
-    return type === 'text/plain';
+    const supportedTypes = ['application/json', 'text/plain', 'text/markdown', 'text/html'];
+    return supportedTypes.includes(type);
   }
 }
 
