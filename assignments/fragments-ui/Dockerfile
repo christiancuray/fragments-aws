@@ -36,5 +36,5 @@ EXPOSE 80
 
 # health check
 HEALTHCHECK --interval=15s --timeout=30s --start-period=10s --retries=3 \
-  CMD curl --fail http://localhost:8080/ || exit 1
+  CMD curl --fail http://localhost/ || exit 1
 
