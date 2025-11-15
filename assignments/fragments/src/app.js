@@ -89,4 +89,4 @@ app.use((err, req, res, next) => {
 });
 module.exports = app;
 
-console.log('testing log to test assignment 2 !');
+console.log('testing log to test assignment 2');
