@@ -1,4 +1,4 @@
-// sucess response
+// success response
 module.exports.createSuccessResponse = function (data) {
   return {
     status: 'ok',

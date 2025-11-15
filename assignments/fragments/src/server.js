@@ -8,7 +8,7 @@ const logger = require('./logger');
 const app = require('./app');
 
 // get port from environment or use default
-const PORT = process.env.PORT || 1600;
+const PORT = process.env.PORT || 8080;
 console.log(PORT);
 
 //start the server
