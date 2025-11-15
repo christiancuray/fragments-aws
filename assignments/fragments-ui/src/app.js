@@ -159,5 +159,7 @@ window.viewFragment = async function (fragmentId) {
   }
 };
 
+console.log("[INFO] App initialized");
+
 // Wait for the DOM to be ready, then start the app
 addEventListener("DOMContentLoaded", init);
