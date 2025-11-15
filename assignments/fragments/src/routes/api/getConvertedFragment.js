@@ -18,10 +18,6 @@ module.exports = async (req, res) => {
       return res.status(404).json(createErrorResponse(404, 'Fragment not found'));
     }
 
-    // Check if the fragment belongs to the authenticated user
-    if (fragment.ownerId !== req.user) {
-      return res.status(404).json(createErrorResponse(404, 'Fragment not found'));
-    }
     const type = fragment.type;
     logger.info(
       `Fragment ${fragment.id} of type ${type} retrieved for user ${req.user} with conversion to .${ext}`
@@ -47,12 +43,6 @@ module.exports = async (req, res) => {
 
       return res.status(200).send(html);
     }
-
-    //Unsupported conversion
-    return res.status(415).json({
-      status: 'error',
-      message: `Cannot convert ${fragment.type} to .${ext} (only md → html supported in Assignment 2)`,
-    });
   } catch (error) {
     logger.error(error);
     res.status(500).json(createErrorResponse(500, 'Internal server error'));

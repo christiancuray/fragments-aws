@@ -12,7 +12,7 @@ describe('GET /v1/fragments?expand=1 Tests', () => {
       .get('/v1/fragments?expand=1')
       .auth('user1@gmail.com', 'password123');
 
-    // May return 404 if no fragments exist, or 200 if fragments were created in other tests
+    // May return 404 if no fragments exist
     expect(404).toBe(res.statusCode);
 
     expect(res.body.status).toBe('error');

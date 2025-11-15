@@ -63,6 +63,10 @@ describe('Fragment class', () => {
     expect(res).toBeNull();
   });
 
+  test('byId() should throw if there is no id', async () => {
+    await expect(Fragment.byId(undefined)).rejects.toThrow('ID is required');
+  });
+
   test('save() should update the fragment in memory', async () => {
     const fragment = new Fragment({ ownerId: '5005', type: 'type1', id: 'saveTest123' });
     await fragment.save();
