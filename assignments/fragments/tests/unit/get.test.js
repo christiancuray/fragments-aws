@@ -25,4 +25,31 @@ describe('Test GET /v1/fragments', () => {
     expect(Array.isArray(res.body.fragments)).toBe(true);
     expect(res.body.message).toBe('fragments retrieved successfully');
   });
+
+  // test expand=1 parameter
+  test('should handle expand=1 query parameter', async () => {
+    // First create a fragment to ensure there's something to expand
+    await request(app)
+      .post('/v1/fragments')
+      .auth('user1@gmail.com', 'password123')
+      .set('Content-Type', 'text/plain')
+      .send('Test content for expand');
+
+    const res = await request(app)
+      .get('/v1/fragments?expand=1')
+      .auth('user1@gmail.com', 'password123');
+
+    // Should return either 200 with expanded fragments or 404 if no fragments
+    expect(200).toBe(res.statusCode);
+
+    if (res.statusCode === 200) {
+      expect(res.body.status).toBe('ok');
+      expect(Array.isArray(res.body.fragments)).toBe(true);
+      if (res.body.fragments.length > 0) {
+        expect(res.body.fragments[0]).toHaveProperty('id');
+        expect(res.body.fragments[0]).toHaveProperty('type');
+        expect(res.body.fragments[0]).toHaveProperty('size');
+      }
+    }
+  });
 });
