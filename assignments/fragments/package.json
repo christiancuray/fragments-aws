@@ -8,8 +8,11 @@
     "coverage": "jest -c jest.config.js --runInBand --coverage",
     "lint": "eslint \"./src/**/*.js\" \"tests/**/*.js\"",
     "start": "node src/index.js",
+    "start:basic": "HTPASSWD_FILE=tests/.htpasswd npm start",
     "dev": "LOG_LEVEL=debug nodemon ./src/index.js --watch src",
-    "debug": "LOG_LEVEL=debug nodemon --inspect=0.0.0.0:9229 ./src/index.js --watch src"
+    "dev:basic": "HTPASSWD_FILE=tests/.htpasswd LOG_LEVEL=debug nodemon ./src/index.js --watch src",
+    "debug": "LOG_LEVEL=debug nodemon --inspect=0.0.0.0:9229 ./src/index.js --watch src",
+    "test:integration": "hurl --test --glob \"tests/integration/**/*.hurl\""
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,7 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.35.0",
+    "@orangeopensource/hurl": "^7.1.0",
     "eslint": "^9.35.0",
     "globals": "^16.3.0",
     "jest": "^29.7.0",
