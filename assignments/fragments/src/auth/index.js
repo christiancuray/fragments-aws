@@ -8,7 +8,7 @@ if (
   process.env.AWS_COGNITO_CLIENT_ID &&
   process.env.AWS_COGNITO_POOL_ID &&
   process.env.HTPASSWD_FILE &&
-  process.env.NODE_ENV === 'production'
+  process.env.NODE_ENV
 ) {
   throw new Error(
     '[ERROR] env contains configuration for both AWS Cognito and HTTP Basic Auth. Only one is allowed in production.'
