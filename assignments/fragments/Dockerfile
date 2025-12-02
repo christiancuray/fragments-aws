@@ -54,8 +54,7 @@ COPY --from=dependencies /app/tests/.htpasswd /app/tests/.htpasswd
 # change ownership of /app dir to non-root user 'node'
 COPY --from=dependencies --chown=node:node /app /app
 
-# use non-root user to run the application for better security
-USER node
+# run the container as root user to be able to bind to ports
 
 # Use tini as the init process
 ENTRYPOINT ["/sbin/tini", "--"]
