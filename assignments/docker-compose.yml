@@ -1,4 +1,6 @@
 # docker-compose.yml
+
+name: fragments-app
 services:
   # Fragments microservice API server
   fragments:
