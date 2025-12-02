@@ -2,7 +2,7 @@ const Fragment = require('../../model/fragments');
 const logger = require('../../logger');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 
-// GET /v1/fragments/:id handler - return the fragment with the specified ID for the current user
+// GET /v1/fragments/?expand=1 handler - return the list of fragments with extended metadata for the current user
 module.exports = async (req, res) => {
   try {
     if (!req.user) {
