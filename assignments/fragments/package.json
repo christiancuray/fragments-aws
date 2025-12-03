@@ -37,6 +37,7 @@
     "supertest": "^7.1.4"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.943.0",
     "apache-md5": "^1.1.8",
     "aws-jwt-verify": "^5.1.0",
     "bcrypt": "^6.0.0",
