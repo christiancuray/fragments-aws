@@ -111,13 +111,13 @@ describe('Fragment class', () => {
     const fragment = new Fragment({ ownerId: '1abc', type: 'type1', id: 'exp999' });
     const buffer = Buffer.from('Data to be deleted');
     await memory.writeFragment('exp999', fragment);
-    await memory.writeFragmentData('exp999', buffer);
+    await memory.writeFragmentData(fragment.ownerId, 'exp999', buffer);
 
     const res = await fragment.delete();
     expect(res).toBe(true);
     const frag = await memory.readFragment('exp999');
     expect(frag).toBeNull();
-    const data = await memory.readFragmentData('exp999');
+    const data = await memory.readFragmentData(fragment.ownerId, 'exp999');
     expect(data).toBeNull();
   });
 

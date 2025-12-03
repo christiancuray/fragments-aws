@@ -29,14 +29,14 @@ describe('fragments database calls using in memory database', () => {
   test('readFragmentData() and writeFragmentData() should should work correctly', async () => {
     const buffer = Buffer.from('This is some test data');
     // write some data to the db
-    await memory.writeFragmentData('3003', buffer);
+    await memory.writeFragmentData('owner1', '3003', buffer);
     // read the data back from the db
-    const res = await memory.readFragmentData('3003');
+    const res = await memory.readFragmentData('owner1', '3003');
     expect(res).toEqual(buffer);
   });
 
   test('readFragmentData() should be null when the data does not exist', async () => {
-    const res = await memory.readFragmentData('7777');
+    const res = await memory.readFragmentData('owner1', '7777');
     expect(res).toBeNull();
   });
 
@@ -66,14 +66,14 @@ describe('fragments database calls using in memory database', () => {
     const fragment = { ...fakeFragment, ownerId: ownerId, id: fragmentId };
     const buffer = Buffer.from('Data to be deleted');
     await memory.writeFragment(fragmentId, fragment);
-    await memory.writeFragmentData(fragmentId, buffer);
+    await memory.writeFragmentData(ownerId, fragmentId, buffer);
 
     // delete the fragment
-    await memory.deleteFragment(fragmentId);
+    await memory.deleteFragment(ownerId, fragmentId);
 
     // try to read the fragment and its data back from the db
     const fragRes = await memory.readFragment(fragmentId);
-    const dataRes = await memory.readFragmentData(fragmentId);
+    const dataRes = await memory.readFragmentData(ownerId, fragmentId);
     expect(fragRes).toBeNull();
     expect(dataRes).toBeNull();
   });
