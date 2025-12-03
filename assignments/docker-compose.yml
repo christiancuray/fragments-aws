@@ -18,11 +18,16 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - NODE_ENV=development
       - AWS_REGION=us-east-1
+      # LocalStack AWS credentials (required for S3 access)
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_SESSION_TOKEN=test
+      - AWS_DEFAULT_REGION=us-east-1
       # Use the LocalStack endpoint vs. AWS for S3 AWS SDK clients.
       # NOTE: we use Docker's internal network to the localstack container
-      - AWS_S3_ENDPOINT_URL=http://localhost:4566
+      - AWS_S3_ENDPOINT_URL=http://localstack:4566
       # Use the DynamoDB local endpoint vs. AWS for DynamoDB AWS SDK clients.
-      - AWS_DYNAMODB_ENDPOINT_URL=http://localhost:8000
+      - AWS_DYNAMODB_ENDPOINT_URL=http://dynamodb-local:8000
       # This S3 bucket and DynamoDB table need to get created first, see
       # local-aws-setup.sh. We'll default to 'fragments' as the name, unless
       # something else is defined in the env.
