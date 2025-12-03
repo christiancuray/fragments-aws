@@ -6,7 +6,7 @@ const {
   readFragmentData,
   listFragments,
   deleteFragment,
-} = require('./data/memory/index');
+} = require('./data/index');
 
 class Fragment {
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
@@ -64,7 +64,7 @@ class Fragment {
 
   // Get the fragment data from the database
   async getData() {
-    return await readFragmentData(this.id);
+    return await readFragmentData(this.ownerId, this.id);
   }
 
   //Set the fragment data in the database
@@ -77,14 +77,14 @@ class Fragment {
     this.size = data.length;
     this.updated = new Date().toISOString();
 
-    await writeFragmentData(this.id, data);
+    await writeFragmentData(this.ownerId, this.id, data);
     await this.save(); // Update metadata with new size and timestamp
   }
 
   // Delete the fragment and its data
   // returns promise<boolean>
   async delete() {
-    return await deleteFragment(this.id);
+    return await deleteFragment(this.ownerId, this.id);
   }
 
   // Check if a content type is supported

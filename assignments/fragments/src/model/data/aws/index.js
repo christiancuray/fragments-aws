@@ -1,3 +1,6 @@
+// XXX: temporary use of memory-db until we add DynamoDB
+// const MemoryDB = require('../memory/memory-db');
+
 const s3Client = require('./s3Client');
 const { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const logger = require('../../../logger');
@@ -89,7 +92,7 @@ async function readFragmentData(ownerId, id) {
   try {
     // Get the object from the Amazon S3 bucket. It is returned as a ReadableStream.
     const data = await s3Client.send(command);
-    logger.info({ ownerId, id }, 'Read fragment data from S3');
+    logger.info({ data, id }, 'Read fragment data from S3');
     // Convert the ReadableStream to a Buffer
     return streamToBuffer(data.Body);
   } catch (err) {
@@ -131,6 +134,9 @@ async function deleteFragment(ownerId, id) {
     // Use our client to send the command
     await s3Client.send(command);
     logger.debug({ ownerId, id }, 'Deleted fragment data from S3');
+    // Also delete the fragment metadata from memory
+    const deleted = fragments.delete(id);
+    return deleted;
   } catch (err) {
     // If anything goes wrong, log enough info that we can debug
     const { Bucket, Key } = params;

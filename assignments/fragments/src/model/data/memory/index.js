@@ -26,9 +26,13 @@ async function readFragment(id) {
 }
 
 // write fragment data as a Buffer
-async function writeFragmentData(id, data) {
+async function writeFragmentData(ownerId, id, data) {
   if (!id) {
     throw new Error('ID is required');
+  }
+
+  if (!ownerId) {
+    throw new Error('Owner ID is required');
   }
 
   if (!Buffer.isBuffer(data)) {
@@ -39,9 +43,12 @@ async function writeFragmentData(id, data) {
 }
 
 // read fragment data from memory
-async function readFragmentData(id) {
+async function readFragmentData(ownerId, id) {
   if (!id) {
     throw new Error('ID is required');
+  }
+  if (!ownerId) {
+    throw new Error('Owner ID is required');
   }
 
   return fragmentData.get(id) || null;
@@ -64,9 +71,13 @@ async function listFragments(ownerId) {
 }
 
 // delete fragment and its data
-async function deleteFragment(id) {
+async function deleteFragment(ownerId, id) {
   if (!id) {
     throw new Error('ID is required');
+  }
+
+  if (!ownerId) {
+    throw new Error('Owner ID is required');
   }
 
   const deleted = fragments.delete(id);
