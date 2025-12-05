@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
     const { ext } = req.params;
 
     // get the fragment by id
-    const fragment = await Fragment.byId(req.params.id);
+    const fragment = await Fragment.byId(req.user, req.params.id);
 
     // return if not found
     if (!fragment) {

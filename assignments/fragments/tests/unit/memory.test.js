@@ -12,7 +12,7 @@ describe('fragments database calls using in memory database', () => {
     // write the fake fragment to the db
     await memory.writeFragment('2002', fakeFragment);
     // read the fragment back from the db
-    const res = await memory.readFragment('2002');
+    const res = await memory.readFragment('1234', '2002');
     expect(res.id).toBe('1234');
     expect(res.ownerId).toBe('2002');
     expect(res.type).toBe('type1');
@@ -22,7 +22,7 @@ describe('fragments database calls using in memory database', () => {
   });
 
   test('readFragment() should be null when the fragment does not exist', async () => {
-    const res = await memory.readFragment('9999');
+    const res = await memory.readFragment('1234', '9999');
     expect(res).toBeNull();
   });
 
@@ -72,7 +72,7 @@ describe('fragments database calls using in memory database', () => {
     await memory.deleteFragment(ownerId, fragmentId);
 
     // try to read the fragment and its data back from the db
-    const fragRes = await memory.readFragment(fragmentId);
+    const fragRes = await memory.readFragment(ownerId, fragmentId);
     const dataRes = await memory.readFragmentData(ownerId, fragmentId);
     expect(fragRes).toBeNull();
     expect(dataRes).toBeNull();

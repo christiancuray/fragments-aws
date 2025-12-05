@@ -51,7 +51,7 @@ describe('Fragment class', () => {
     const fragment = new Fragment({ ownerId: '4004', type: 'type1', id: '9999abc' });
     await memory.writeFragment('9999abc', fragment);
 
-    const res = await Fragment.byId('9999abc');
+    const res = await Fragment.byId('4004', '9999abc');
     expect(res).toBeInstanceOf(Fragment);
     expect(res.id).toBe('9999abc');
     expect(res.ownerId).toBe('4004');
@@ -59,19 +59,19 @@ describe('Fragment class', () => {
   });
 
   test('byId() should return null if fragment does not exist', async () => {
-    const res = await Fragment.byId('nonexistent');
+    const res = await Fragment.byId('4004', 'nonexistent');
     expect(res).toBeNull();
   });
 
   test('byId() should throw if there is no id', async () => {
-    await expect(Fragment.byId(undefined)).rejects.toThrow('ID is required');
+    await expect(Fragment.byId('4004', undefined)).rejects.toThrow('ID is required');
   });
 
   test('save() should update the fragment in memory', async () => {
     const fragment = new Fragment({ ownerId: '5005', type: 'type1', id: 'saveTest123' });
     await fragment.save();
 
-    const res = await memory.readFragment('saveTest123');
+    const res = await memory.readFragment('5005', 'saveTest123');
     expect(res.id).toBe('saveTest123');
     expect(res.ownerId).toBe('5005');
     expect(res.type).toBe('type1');
@@ -98,7 +98,7 @@ describe('Fragment class', () => {
     const data = await fragment.getData();
     expect(data).toEqual(buffer);
     // Verify the size is updated
-    const res = await memory.readFragment('12345678');
+    const res = await memory.readFragment('777', '12345678');
     expect(res.size).toBe(buffer.length);
   });
 
@@ -115,7 +115,7 @@ describe('Fragment class', () => {
 
     const res = await fragment.delete();
     expect(res).toBe(true);
-    const frag = await memory.readFragment('exp999');
+    const frag = await memory.readFragment('1abc', 'exp999');
     expect(frag).toBeNull();
     const data = await memory.readFragmentData(fragment.ownerId, 'exp999');
     expect(data).toBeNull();

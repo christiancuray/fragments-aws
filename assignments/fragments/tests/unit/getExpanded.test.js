@@ -12,11 +12,11 @@ describe('GET /v1/fragments?expand=1 Tests', () => {
       .get('/v1/fragments?expand=1')
       .auth('user1@gmail.com', 'password123');
 
-    // May return 404 if no fragments exist
-    expect(404).toBe(res.statusCode);
+    // Empty list is valid - return 200
+    expect(res.statusCode).toBe(200);
 
-    expect(res.body.status).toBe('error');
-    expect(res.body.error.message).toBe('No fragments found');
+    expect(res.body.status).toBe('ok');
+    expect(res.body.fragments).toEqual([]);
   });
 
   test('should return expanded fragments with full metadata when fragments exist', async () => {
