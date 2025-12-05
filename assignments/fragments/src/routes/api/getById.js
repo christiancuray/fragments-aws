@@ -5,7 +5,7 @@ const { createSuccessResponse, createErrorResponse } = require('../../response')
 // GET /v1/fragments/:id handler - return the fragment with the specified ID for the current user
 module.exports = async (req, res) => {
   try {
-    const fragment = await Fragment.byId(req.params.id);
+    const fragment = await Fragment.byId(req.user, req.params.id);
 
     if (!fragment) {
       return res.status(404).json(createErrorResponse(404, 'Fragment not found'));

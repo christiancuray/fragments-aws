@@ -71,9 +71,39 @@ jobs:
         working-directory: assignments/fragments
         run: npm test
 
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        working-directory: assignments/fragments
+        run: npm install
+
+      - name: Build and Run Containers
+        working-directory: assignments/fragments
+        run: |
+          docker-compose -f ../docker-compose.yml up -d --build
+          sleep 10
+
+      - name: Setup Local AWS Resources
+        run: ./assignments/scripts/local-aws-setup.sh
+
+      - name: Run Hurl Integration Tests
+        working-directory: assignments/fragments
+        run: npm run test:integration
+
   docker-hub:
     name: Build and Push to Docker Hub
-    needs: [lint, dockerfile-lint, unit-tests]
+    needs: [lint, dockerfile-lint, unit-tests, integration-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

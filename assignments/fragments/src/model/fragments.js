@@ -29,7 +29,7 @@ class Fragment {
     const fragments = [];
 
     for (const id of fragmentIds) {
-      const fragmentData = await readFragment(id);
+      const fragmentData = await readFragment(ownerId, id);
       if (fragmentData) {
         fragments.push(new Fragment(fragmentData));
       }
@@ -39,12 +39,15 @@ class Fragment {
   }
 
   // Get a fragment by ID
-  static async byId(id) {
+  static async byId(ownerId, id) {
     if (!id) {
       throw new Error('ID is required');
     }
+    if (!ownerId) {
+      throw new Error('Owner ID is required');
+    }
 
-    const fragmentData = await readFragment(id);
+    const fragmentData = await readFragment(ownerId, id);
     return fragmentData ? new Fragment(fragmentData) : null;
   }
 

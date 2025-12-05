@@ -17,9 +17,12 @@ async function writeFragment(id, fragment) {
 }
 
 // read fragment metadata from memory
-async function readFragment(id) {
+async function readFragment(ownerId, id) {
   if (!id) {
     throw new Error('ID is required');
+  }
+  if (!ownerId) {
+    throw new Error('Owner ID is required');
   }
 
   return fragments.get(id) || null;

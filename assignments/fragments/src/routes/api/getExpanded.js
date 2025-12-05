@@ -10,8 +10,17 @@ module.exports = async (req, res) => {
     }
     const fragmentList = await Fragment.byUser(req.user);
 
-    if (!fragmentList || fragmentList.length === 0) {
-      return res.status(404).json(createErrorResponse(404, 'No fragments found'));
+    if (!fragmentList) {
+      return res.status(500).json(createErrorResponse(500, 'Error retrieving fragments'));
+    }
+    // Empty list is valid - return 200 with empty array
+    if (fragmentList.length === 0) {
+      return res.status(200).json(
+        createSuccessResponse({
+          fragments: [],
+          message: 'No fragments found',
+        })
+      );
     }
     logger.info(`User ${req.user} has ${fragmentList.length} fragments`);
 
