@@ -88,5 +88,3 @@ app.use((err, req, res, next) => {
   next();
 });
 module.exports = app;
-
-console.log('testing log to test assignment 2 aas');
