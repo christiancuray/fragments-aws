@@ -165,6 +165,9 @@ async function listFragments(ownerId, expand = false) {
   }
 }
 
+// update fragment data in S3 and metadata in DynamoDB
+//async function updateFragment(ownerId, id, data) {};
+
 // delete fragment and its data from S3 object in a Bucket and from DynamoDB
 async function deleteFragment(ownerId, id) {
   // Create the DELETE API params from our details

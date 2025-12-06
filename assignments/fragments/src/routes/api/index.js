@@ -12,6 +12,7 @@ router.get('/fragments/:id.:ext', authenticate(), require('./getConvertedFragmen
 router.get('/fragments/:id', authenticate(), require('./getById'));
 router.get('/fragments/:id/info', authenticate(), require('./getInfoById'));
 router.delete('/fragments/:id', authenticate(), require('./deleteById'));
+router.put('/fragments/:id', authenticate(), require('./putById'));
 
 // other routes will go here in the future ( PUT, DELETE, etc)
 
