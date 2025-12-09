@@ -119,3 +119,58 @@ export async function getConvertedFragmentById(user, fragmentId, ext) {
     throw err;
   }
 }
+
+// delete a fragment by id
+export async function deleteFragmentById(user, fragmentId) {
+  console.log("[INFO] Deleting fragment by id:", fragmentId);
+  try {
+    const fragmentURL = new URL(`/v1/fragments/${fragmentId}`, apiURL);
+    const res = await fetch(fragmentURL, {
+      method: "DELETE",
+      headers: user.authorizationHeaders(),
+    });
+
+    // check if the response is not ok, if so throw an error
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("[SUCCESS] Fragment deleted successfully:", data);
+    return data;
+  } catch (err) {
+    console.error("[ERROR] Unable to delete fragment:", err);
+    throw err;
+  }
+}
+
+// update a fragment by id
+export async function updateFragmentById(
+  user,
+  fragmentId,
+  content,
+  contentType
+) {
+  console.log("[INFO] Updating fragment by id:", fragmentId);
+  try {
+    const fragmentURL = new URL(`/v1/fragments/${fragmentId}`, apiURL);
+    const res = await fetch(fragmentURL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": contentType,
+        Authorization: `Bearer ${user.idToken}`,
+      },
+      body: content,
+    });
+
+    // check if the response is not ok, if so throw an error
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("[SUCCESS] Fragment updated successfully:", data);
+    return data;
+  } catch (err) {
+    console.error("[ERROR] Unable to update fragment:", err);
+    throw err;
+  }
+}
