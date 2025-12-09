@@ -93,8 +93,39 @@ class Fragment {
   // Check if a content type is supported
   // returns boolean
   static isSupportedType(type) {
-    const supportedTypes = ['application/json', 'text/plain', 'text/markdown', 'text/html'];
+    const supportedTypes = [
+      'text/plain',
+      'text/markdown',
+      'text/html',
+      'text/csv',
+      'application/json',
+      'application/yaml',
+      'image/png',
+      'image/jpeg',
+      'image/webp',
+      'image/avif',
+      'image/gif',
+    ];
     return supportedTypes.includes(type);
+  }
+
+  // Get valid conversion extensions for a content type
+  // returns array of valid extensions (includes identity conversions)
+  static getConversionExtensions(type) {
+    const conversions = {
+      'text/plain': ['txt'],
+      'text/markdown': ['md', 'html', 'txt'],
+      'text/html': ['html', 'txt'],
+      'text/csv': ['csv', 'txt', 'json'],
+      'application/json': ['json', 'yaml', 'yml', 'txt'],
+      'application/yaml': ['yaml', 'yml', 'txt'],
+      'image/png': ['png', 'jpg', 'webp', 'gif', 'avif'],
+      'image/jpeg': ['jpg', 'png', 'webp', 'gif', 'avif'],
+      'image/webp': ['webp', 'png', 'jpg', 'gif', 'avif'],
+      'image/avif': ['avif', 'png', 'jpg', 'webp', 'gif'],
+      'image/gif': ['gif', 'png', 'jpg', 'webp', 'avif'],
+    };
+    return conversions[type] || [];
   }
 }
 

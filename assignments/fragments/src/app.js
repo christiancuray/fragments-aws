@@ -29,7 +29,19 @@ app.use(compression()); // use gzip/deflate compression middleware
 
 // Helper function to check if content type is supported
 const isSupportedContentType = (type) => {
-  const supportedTypes = ['application/json', 'text/plain', 'text/markdown', 'text/html'];
+  const supportedTypes = [
+    'text/plain',
+    'text/markdown',
+    'text/html',
+    'text/csv',
+    'application/json',
+    'application/yaml',
+    'image/png',
+    'image/jpeg',
+    'image/webp',
+    'image/avif',
+    'image/gif',
+  ];
   return supportedTypes.includes(type);
 };
 
@@ -54,7 +66,7 @@ const rawBody = () => {
   });
 };
 
-// Use a raw body parser for POST, which will give a `Buffer` Object or `{}` at `req.body`
+// Use a raw body parser for POST and PUT, which will give a `Buffer` Object or `{}` at `req.body`
 // You can use Buffer.isBuffer(req.body) to test if it was parsed by the raw body parser.
 app.use('/v1/fragments', rawBody());
 
