@@ -38,6 +38,7 @@ module.exports = async (req, res) => {
 
     logger.info(`Fragment ${fragment.id} updated for user ${req.user}`);
 
+    res.Header('Location', `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`);
     // Return the updated fragment with metadata
     res.status(200).json(
       createSuccessResponse({
