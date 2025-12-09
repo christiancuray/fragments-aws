@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
     const fragment = await Fragment.byId(req.user, req.params.id);
 
     if (!fragment) {
+      logger.warn(`Fragment ${req.params.id} not found for user ${req.user}`);
       return res.status(404).json(createErrorResponse(404, 'Fragment not found'));
     }
 
@@ -36,10 +37,6 @@ module.exports = async (req, res) => {
     await fragment.setData(req.body);
 
     logger.info(`Fragment ${fragment.id} updated for user ${req.user}`);
-
-    // Set the Location header to the fragment URL
-    const location = `${req.protocol}://${req.get('host')}/v1/fragments/${fragment.id}`;
-    res.setHeader('Location', location);
 
     // Return the updated fragment with metadata
     res.status(200).json(
