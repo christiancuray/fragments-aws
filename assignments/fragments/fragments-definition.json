@@ -1,9 +1,4 @@
 {
-    "compatibilities": [
-        "EC2",
-        "MANAGED_INSTANCES",
-        "FARGATE"
-    ],
     "containerDefinitions": [
         {
             "cpu": 256,
@@ -18,7 +13,7 @@
                 },
                 {
                     "name": "AWS_COGNITO_POOL_ID",
-                    "value": "us-east-1_8S0fsFDpC"
+                    "value": "us-east-1_UWvlW0X9p"
                 },
                 {
                     "name": "PORT",
@@ -30,11 +25,11 @@
                 },
                 {
                     "name": "AWS_S3_BUCKET_NAME",
-                    "value": "cdcuray-fragments"
+                    "value": "cdcuray-fragments-storage"
                 },
                 {
                     "name": "AWS_COGNITO_CLIENT_ID",
-                    "value": "3dhqnp10a9sl720kssa6qlfkro"
+                    "value": "5klhbnaola0q28bjvk8h4uk6rb"
                 },
                 {
                     "name": "AWS_DYNAMODB_TABLE_NAME",
@@ -43,7 +38,7 @@
             ],
             "environmentFiles": [],
             "essential": true,
-            "image": "christiandev2002/fragments:latest",
+            "image": "950165721417.dkr.ecr.us-east-1.amazonaws.com/fragments:latest",
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -72,50 +67,24 @@
         }
     ],
     "cpu": "256",
-    "executionRoleArn": "arn:aws:iam::654654607947:role/LabRole",
+    "executionRoleArn": "arn:aws:iam::950165721417:role/fragments-task-role",
     "family": "fragments-task",
     "memory": "512",
     "networkMode": "awsvpc",
     "placementConstraints": [],
-    "registeredAt": "2025-12-02T17:52:35.992Z",
-    "registeredBy": "arn:aws:sts::654654607947:assumed-role/voclabs/user4388406=cdcuray@myseneca.ca",
-    "requiresAttributes": [
-        {
-            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-        },
-        {
-            "name": "ecs.capability.execution-role-awslogs"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.21"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.task-iam-role"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-        },
-        {
-            "name": "ecs.capability.task-eni"
-        },
-        {
-            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
-        }
-    ],
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "revision": 2,
     "runtimePlatform": {
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "status": "ACTIVE",
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:654654607947:task-definition/fragments-task:2",
-    "taskRoleArn": "arn:aws:iam::654654607947:role/LabRole",
+    "taskRoleArn": "arn:aws:iam::950165721417:role/fragments-task-role",
     "volumes": [],
-    "tags": []
+    "tags": [
+        {
+            "key": "Name",
+            "value": "fragments-task"
+        }
+    ]
 }
