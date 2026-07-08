@@ -12,7 +12,6 @@ describe('Test 404 Middleware', () => {
 });
 
 // Test Error Handling Middleware
-
 describe('Test Error Handling Middleware', () => {
   test('should return 500 status code for server errors', async () => {
     const res = await request(app)
