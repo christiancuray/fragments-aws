@@ -2,134 +2,134 @@ name: ci
 
 # This workflow is triggered on pushes and pull requests to the main branch
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "assignments/fragments/**"
-  push:
-    branches:
-      - main
-    paths:
-      - "assignments/fragments/**"
+    pull_request:
+        branches:
+            - main
+        paths:
+            - "assignments/fragments/**"
+    push:
+        branches:
+            - main
+        paths:
+            - "assignments/fragments/**"
 
 jobs:
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    lint:
+        name: ESLint
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Set-up node
-        uses: actions/setup-node@v4
-        with:
-          # Use node LTS
-          node-version: "lts/*"
-          cache: "npm"
+            - name: Set-up node
+              uses: actions/setup-node@v4
+              with:
+                  # Use node LTS
+                  node-version: "lts/*"
+                  cache: "npm"
 
-      - name: Install dependencies
-        working-directory: assignments/fragments
-        run: npm ci
+            - name: Install dependencies
+              working-directory: assignments/fragments
+              run: npm ci
 
-      - name: Run ESLint
-        working-directory: assignments/fragments
-        run: npm run lint
+            - name: Run ESLint
+              working-directory: assignments/fragments
+              run: npm run lint
 
-  # lint dockerfile with hadolint
-  dockerfile-lint:
-    name: Dockerfile Lint
-    runs-on: ubuntu-latest
-    steps:
-      # https://github.com/marketplace/actions/hadolint-action
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # lint dockerfile with hadolint
+    dockerfile-lint:
+        name: Dockerfile Lint
+        runs-on: ubuntu-latest
+        steps:
+            # https://github.com/marketplace/actions/hadolint-action
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Lint Dockerfile
-        uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: assignments/fragments/Dockerfile
+            - name: Lint Dockerfile
+              uses: hadolint/hadolint-action@v3.1.0
+              with:
+                  dockerfile: assignments/fragments/Dockerfile
 
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    unit-tests:
+        name: Unit Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: "npm"
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "lts/*"
+                  cache: "npm"
 
-      - name: Install dependencies
-        working-directory: assignments/fragments
-        run: npm ci
+            - name: Install dependencies
+              working-directory: assignments/fragments
+              run: npm ci
 
-      - name: Run unit tests
-        working-directory: assignments/fragments
-        run: npm test
+            - name: Run unit tests
+              working-directory: assignments/fragments
+              run: npm test
 
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
+    integration-tests:
+        name: Integration Tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out code
+              uses: actions/checkout@v4
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: "npm"
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "lts/*"
+                  cache: "npm"
 
-      - name: Install dependencies
-        working-directory: assignments/fragments
-        run: npm install
+            - name: Install dependencies
+              working-directory: assignments/fragments
+              run: npm install
 
-      - name: Build and Run Containers
-        working-directory: assignments/fragments
-        run: |
-          docker compose -f ../docker-compose.yml up -d --build
-          sleep 10
+            - name: Build and Run Containers
+              working-directory: assignments/fragments
+              run: |
+                  docker compose -f ../docker-compose.yml up -d --build
+                  sleep 30
 
-      - name: Setup Local AWS Resources
-        run: ./assignments/scripts/local-aws-setup.sh
+            - name: Setup Local AWS Resources
+              run: ./assignments/scripts/local-aws-setup.sh
 
-      - name: Run Hurl Integration Tests
-        working-directory: assignments/fragments
-        run: npm run test:integration
+            - name: Run Hurl Integration Tests
+              working-directory: assignments/fragments
+              run: npm run test:integration
 
-  docker-hub:
-    name: Build and Push to Docker Hub
-    needs: [lint, dockerfile-lint, unit-tests, integration-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    docker-hub:
+        name: Build and Push to Docker Hub
+        needs: [lint, dockerfile-lint, unit-tests, integration-tests]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-        # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker buildx
-        uses: docker/setup-buildx-action@v3
+              # https://github.com/docker/setup-buildx-action
+            - name: Set up Docker buildx
+              uses: docker/setup-buildx-action@v3
 
-        # https://github.com/docker/login-action
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+              # https://github.com/docker/login-action
+            - name: Login to Docker Hub
+              uses: docker/login-action@v3
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push
-        env:
-          DOCKERHUB_REPO: christiandev2002/fragments
-          SHA_TAG: ${{ github.sha }}
-        uses: docker/build-push-action@v6
-        with:
-          context: assignments/fragments
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ env.DOCKERHUB_REPO }}:latest
-            ${{ env.DOCKERHUB_REPO }}:main
-            ${{ env.DOCKERHUB_REPO }}:${{ env.SHA_TAG }}
+            - name: Build and Push
+              env:
+                  DOCKERHUB_REPO: christiandev2002/fragments
+                  SHA_TAG: ${{ github.sha }}
+              uses: docker/build-push-action@v6
+              with:
+                  context: assignments/fragments
+                  push: true
+                  platforms: linux/amd64,linux/arm64
+                  tags: |
+                      ${{ env.DOCKERHUB_REPO }}:latest
+                      ${{ env.DOCKERHUB_REPO }}:main
+                      ${{ env.DOCKERHUB_REPO }}:${{ env.SHA_TAG }}
