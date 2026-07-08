@@ -20,10 +20,9 @@ echo "AWS_DEFAULT_REGION=us-east-1"
  
 # Wait for LocalStack to be ready, by inspecting the response from healthcheck
 echo 'Waiting for LocalStack S3...'
-until curl -s http://localhost:4566/health | grep -q '"s3"' || \
-      curl -s http://localhost:4566/_localstack/health | grep -q '"s3"'; do
-    sleep 5
-done
+timeout 60 bash -c 'until curl -s http://localhost:4566/health 2>/dev/null | grep -q "\"s3\""; do sleep 2; done' 2>/dev/null || \
+timeout 60 bash -c 'until curl -s http://localstack:4566/health 2>/dev/null | grep -q "\"s3\""; do sleep 2; done' 2>/dev/null || \
+sleep 30  # Fallback: just wait
 echo 'LocalStack S3 Ready'
 
 # Create our S3 bucket with LocalStack
