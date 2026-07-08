@@ -92,10 +92,7 @@ jobs:
               working-directory: assignments/fragments
               run: |
                   docker compose -f ../docker-compose.yml up -d --build
-                  sleep 120
-
-            - name: Check LocalStack health
-              run: curl -s http://localhost:4566/_localstack/health || echo "LocalStack not reachable"
+                  sleep 30
 
             - name: Setup Local AWS Resources
               run: ./assignments/scripts/local-aws-setup.sh
