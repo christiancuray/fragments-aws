@@ -2,6 +2,7 @@
 const apiURL = import.meta.env.VITE_FRAGMENT_API_URL || "http://localhost:8080";
 
 // get user fragments
+
 export async function getUserFragments(user) {
     console.log("[INFO] Requesting user fragments data ...");
     try {
