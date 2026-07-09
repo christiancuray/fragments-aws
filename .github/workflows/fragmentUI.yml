@@ -53,6 +53,12 @@ jobs:
 
             - name: Build project
               working-directory: assignments/fragments-ui
+              env:
+                  VITE_API_URL: https://cognito-idp.us-east-1.amazonaws.com
+                  VITE_AWS_COGNITO_POOL_ID: ${{ secrets.AWS_COGNITO_POOL_ID }}
+                  VITE_AWS_COGNITO_CLIENT_ID: ${{ secrets.AWS_COGNITO_CLIENT_ID }}
+                  VITE_OAUTH_SIGN_IN_REDIRECT_URL: https://d1sekol8d6tp20.cloudfront.net/
+                  VITE_FRAGMENT_API_URL: http://fragments-lb-1952149410.us-east-1.elb.amazonaws.com
               run: npm run build
 
             - name: Configure AWS Credentials
