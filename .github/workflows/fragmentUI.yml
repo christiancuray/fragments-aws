@@ -1,80 +1,75 @@
 name: fragmentUI-CI/CD
 
-# This workflow is triggered on pushes and pull requests to the main branch
 on:
-  pull_request:
-    branches:
-      - main
-    paths:
-      - "assignments/fragments-ui/**"
-  push:
-    branches:
-      - main
-    paths:
-      - "assignments/fragments-ui/**"
+    pull_request:
+        branches:
+            - main
+        paths:
+            - "assignments/fragments-ui/**"
+    push:
+        branches:
+            - main
+        paths:
+            - "assignments/fragments-ui/**"
 
 jobs:
-  ci:
-    name: CI - Test & Build
-    runs-on: ubuntu-latest
+    ci:
+        name: CI - Test & Build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+            - name: Set-up node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
 
-      - name: Set-up node
-        uses: actions/setup-node@v4
-        with:
-          # Use node 22
-          node-version: "22"
+            - name: Install dependencies
+              working-directory: assignments/fragments-ui
+              run: npm ci
 
-      - name: Install dependencies
-        working-directory: assignments/fragments-ui
-        run: npm ci
+            - name: Build project
+              working-directory: assignments/fragments-ui
+              run: npm run build
 
-      - name: Build project
-        working-directory: assignments/fragments-ui
-        run: npm run build
+    deploy-to-s3:
+        name: CD - Deploy to S3 + CloudFront
+        needs: ci
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-  cd:
-    name: CD - Docker Multi-Arch Build & Push
-    needs: ci
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: assignments/fragments-ui
+            - name: Set-up node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+            - name: Install dependencies
+              working-directory: assignments/fragments-ui
+              run: npm ci
 
-      # Setup Docker BuildX
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+            - name: Build project
+              working-directory: assignments/fragments-ui
+              run: npm run build
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: us-east-1
 
-      # Login to Docker Hub
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: Deploy to S3
+              run: |
+                  aws s3 sync assignments/fragments-ui/dist s3://cdcuray-fragments-ui \
+                    --delete \
+                    --region us-east-1
 
-      # Build & Push Multi-Arch Image
-      - name: Build & Push
-        env:
-          DOCKERHUB_REPO: christiandev2002/fragments-ui
-          SHA_TAG: ${{ github.sha }}
-        uses: docker/build-push-action@v6
-        with:
-          context: assignments/fragments-ui
-          file: assignments/fragments-ui/Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ${{ env.DOCKERHUB_REPO }}:latest
-            ${{ env.DOCKERHUB_REPO }}:main
-            ${{ env.DOCKERHUB_REPO }}:${{ env.SHA_TAG }}
+            - name: Invalidate CloudFront cache
+              run: |
+                  aws cloudfront create-invalidation \
+                    --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+                    --paths "/*"
